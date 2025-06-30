@@ -1,9 +1,10 @@
+#include "kband.h"
 #include<iostream>
 #include<vector>
 #include <algorithm>
 #include <cassert>
 constexpr int INF = 1e9;
-int mat = 1, mismat = 2, ogap = 3, egap = 1, k = 1;
+int mat = 1, mismat = 2, ogap = 3, egap = 1, k = 16;
 int match(char si, char tj) {
   return si == tj ? mat : -mismat;
 }
@@ -11,6 +12,7 @@ inline int convert(int j, int i) {
   return j - i + k;
 }
 void PSA(std::string& s, std::string& t) {
+  std::cout << k << "\n";
   bool isSwap = 0;
   if (s.size() > t.size()) {
     std::swap(s, t);
