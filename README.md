@@ -11,18 +11,19 @@
 
 2. make
    ```bash
-    cd MSA
-    make
+   cd MSA
+   cmake -S . -B build
+   cmake --build build
    ```
 
 3. run
    ```bash
-   ./staralign ./test/rna.fasta ./test/rna.align
+   ./build/MSA ./test/mtDNA.fasta ./test/result.fasta
    ```
 
 4. clean
    ```bash
-   make clean
+   cmake --build build --target clean
    ```
 
 ## License
