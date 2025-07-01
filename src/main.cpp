@@ -1,7 +1,7 @@
-#include<iostream>
+#include <iostream>
 #include <cstdlib> // 包含 EXIT_FAILURE 宏
-#include "kband.h"
 #include "fasta.h"
+#include "starAlign.h"
 int main(int argc, char** argv) {
 
   if (argc < 3) {
@@ -15,7 +15,11 @@ int main(int argc, char** argv) {
   // std::cout << readPath << "\n";
   std::vector<std::string> seqs, labels;
   readFasta(readPath, seqs, labels);
-  writeFasta(writePath, seqs, labels);
+  while (seqs.size() > 20) seqs.pop_back();
+  while (labels.size() > 20) labels.pop_back();
+  std::vector<std::string> alignedSeqs;
+  starAlign(seqs, alignedSeqs);
+  writeFasta(writePath, alignedSeqs, labels);
   // std::string s = "TGGGTACCACCCAAGTATTGA", t = "TGGGTACCACCCAAGTATTGACTCACCCATCAACAACCGCTATGT";
   // PSA(s, t);
   return 0;

@@ -5,5 +5,5 @@
 
 int match(char, char);
 inline int convert(int, int);
-void PSA(std::string&, std::string&);
+int PSA_Kband(const std::string&, const std::string&, std::string*, std::string*);
 #endif

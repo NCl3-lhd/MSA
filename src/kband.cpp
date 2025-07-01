@@ -1,18 +1,18 @@
 #include "kband.h"
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
 #include <algorithm>
 #include <cassert>
 constexpr int INF = 1e9;
-int mat = 1, mismat = 2, ogap = 3, egap = 1, k = 16;
+int mat = 1, mismat = 2, ogap = 3, egap = 1, k = 25;
 int match(char si, char tj) {
   return si == tj ? mat : -mismat;
 }
 inline int convert(int j, int i) {
   return j - i + k;
 }
-void PSA(std::string& s, std::string& t) {
-  std::cout << k << "\n";
+int PSA_Kband(const std::string& _s, const std::string& _t, std::string* alignedS = nullptr, std::string* alignedT = nullptr) {
+  std::string s = _s, t = _t;
   bool isSwap = 0;
   if (s.size() > t.size()) {
     std::swap(s, t);
@@ -74,14 +74,23 @@ void PSA(std::string& s, std::string& t) {
       i--;
     }
   }
-  // assert(op == 'a');
+  assert(op == 'a');
   reverse(S.begin(), S.end());
   reverse(T.begin(), T.end());
   if (isSwap) {
-    std::swap(s, t);
+    // std::swap(s, t);
     std::swap(S, T);
   }
-  std::cout << "W: " << ans << "\n";
-  std::cout << "S: " << S << "\n";
-  std::cout << "T: " << T << "\n";
+  if (alignedS != nullptr) {
+    *alignedS = S;
+  }
+  if (alignedT != nullptr) {
+    *alignedT = T;
+  }
+  // std::cout << "W: " << ans << "\n";
+  // std::cout << "S: " << S << "\n";
+  // std::cout << "T: " << T << "\n";
+  return ans;
 }
+
+
