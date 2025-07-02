@@ -18,7 +18,7 @@
 
 3. run
    ```bash
-   ./build/MSA ./test/mtDNA.fasta ./test/result.fasta
+   ./build/MSA ./test/mtDNA.fasta ./test/result.fasta 10
    ```
 
 4. clean
