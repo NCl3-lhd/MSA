@@ -35,35 +35,38 @@ int findCenterSeqByScore(const std::vector<std::string>& seqs) {
 }
 std::vector<std::array<std::string, 2>> getAlignedSeqs(int idxC, const std::vector<std::string>& seqs, int thread_count) {
   std::vector<std::array<std::string, 2>> res;
+  res.reserve(int(seqs.size()) - 1);
   if (thread_count > 1) {
     ThreadPool pool(thread_count);
     std::vector<std::future<std::array<std::string, 2>>> results;
-    std::string seqC = seqs[idxC];
+    const std::string seqC = seqs[idxC];
     for (int i = 0; i < seqs.size(); i++) {
-      std::string seqI = seqs[i];
       if (i == idxC) continue;
-      results.emplace_back(pool.enqueue([&seqs, idxC, i] {
-        std::string s, t;
-        PSA_Kband(seqs[idxC], seqs[i], &s, &t);
-        return std::array<std::string, 2> {s, t};
+      results.emplace_back(pool.enqueue([&seqC, seqI = seqs[i]] {
+        std::array<std::string, 2> aligned;
+        PSA_Kband(seqC, seqI, &aligned[0], &aligned[1]);
+        return aligned;
       }));
-      std::cout << i << "\n";
+      // std::cout << i << "\n";
     }
+    std::cout << seqs.size() << "\n";
+    int cur = 0;
     for (auto&& result : results) {
       res.emplace_back(result.get());
+      if (cur++ % 1000 == 0) std::cout << cur << "\n";
     }
     std::cout << "finish" << "\n";
   }
   else {
-    std::string s, t;
+    std::array<std::string, 2> aligned;
+    // int cur = 0;
     for (int i = 0; i < seqs.size(); i++) {
       if (i == idxC) continue;
-      PSA_Kband(seqs[idxC], seqs[i], &s, &t);
-      res.push_back({ s, t });
+      PSA_Kband(seqs[idxC], seqs[i], &aligned[0], &aligned[1]);
+      res.emplace_back(std::move(aligned));
+      // std::cout << cur++ << "\n";
     }
   }
-
-
   return res;
 }
 void getMarkInsertion(const std::vector<std::array<std::string, 2>>& starsAligned, std::vector<int>& markInsertion) {
